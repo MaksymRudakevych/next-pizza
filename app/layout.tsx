@@ -2,17 +2,29 @@ import { Geist, Geist_Mono, Manrope, Roboto_Slab } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const robotoSlabHeading = Roboto_Slab({subsets:['latin'],variable:'--font-heading'});
+const robotoSlabHeading = Roboto_Slab({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-roboto-slab",
+})
 
-const manrope = Manrope({subsets:['latin'],variable:'--font-sans'})
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-manrope",
+})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-geist-mono",
 })
+import type { Metadata } from "next"
+import Header from "@/components/shared/Header"
 
+export const metadata: Metadata = {
+  title: "Pizza Wave",
+  description: "Свіжа піца з доставкою",
+}
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,10 +34,20 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", manrope.variable, robotoSlabHeading.variable)}
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        manrope.variable,
+        robotoSlabHeading.variable
+      )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <main className="min-h-screen">
+            <Header />
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   )

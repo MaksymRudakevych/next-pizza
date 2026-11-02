@@ -1,19 +1,36 @@
-import { Button } from "@/components/ui/button"
+import { Container, Title, TopBar, Filter } from "@/components/shared"
+import { ProductsGroupList } from "@/components/shared/ProductsGroupList"
+import { PASTA, PIZZAS, SUSHI } from "@/data"
 
 export default function Page() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    <Container className="mt-6">
+      <Title className="font-heading text-primary" text="Full Menu" size="lg" />
+      <TopBar />
+
+      <div className="mt-10 flex gap-8">
+        <div className="w-63 shrink-0">
+          <Filter />
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
+
+        <div className="flex flex-1 flex-col gap-8">
+          <ProductsGroupList
+            titleText="Pizzas"
+            items={PIZZAS}
+            categoryValue="pizza"
+          />
+          <ProductsGroupList
+            titleText="Sushi"
+            items={SUSHI}
+            categoryValue="sushi"
+          />
+          <ProductsGroupList
+            titleText="Pasta"
+            items={PASTA}
+            categoryValue="pasta"
+          />
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
