@@ -14,13 +14,16 @@ model User {
   password String
   email    String @unique
 
-   role UserRole
+   role UserRole @default(USER)
 
+   provider String
+   providerId String
    cart Cart?
 
    orders Order[]
 
    verificationsCodes VerificationCode?
+   verified DateTime
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
@@ -32,13 +35,12 @@ model Product {
 
   name        String
   description String
-  price       Int
   imageUrl    String
 
   ingredients Ingredients[]
 
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  category   Category @relation(fields: [categoryValue], references: [value])
+  categoryValue CategoryValue
 
   items ProductItem[]
 
@@ -49,10 +51,9 @@ model Product {
 model ProductItem {
   id Int @id @default(autoincrement())
 
-  name     String
   price    Int
   size     Int?
-  pizzaType Int?
+  pizzaType PizzaType?
 
   cartItems CartItem[]
 
@@ -64,9 +65,12 @@ model ProductItem {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
 
-  name String @unique
+  value   CategoryValue @unique 
+  name    String @unique
+
+  filters Json?   
 
   products Product[]
 
@@ -80,10 +84,10 @@ model Ingredients {
   name     String @unique
   price    Int
   imageUrl String
+  category String 
 
   cartItems CartItem[]
-
-  products Product[]
+  products  Product[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -107,12 +111,7 @@ model Cart {
 
 model CartItem {
 
-  id Int @id @default(autoincrement())
-
-  name        String
-  description String
-  price       Int
-  imageUrl    String
+  id Int @id @default(autoincrement()) 
  
   quantity Int 
 
@@ -159,7 +158,7 @@ model VerificationCode{
     user User @relation(fields: [userId],references: [id])
     userId Int @unique
 
-    code String
+    code String @unique
 
    
     createdAt DateTime @default(now())
@@ -173,4 +172,18 @@ enum OrderStatus{
 enum UserRole{
   USER 
   ADMIN
+}
+enum CategoryValue {
+  pizza
+  sushi
+  pasta
+  salads
+  snacks
+  sauces
+  drinks
+  desserts
+}
+enum PizzaType {
+  THIN
+  TRADITIONAL
 }
